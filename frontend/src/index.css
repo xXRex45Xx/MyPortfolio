@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@theme {
+    --color-l-bg-def: #f7f8f7; /*light-background-default*/
+    --color-l-bg-surf-prim-def: #e6e9e7; /*light-background-surface-primary-default*/
+    --color-l-bg-fill-def: #f3f4f4; /*light-background-fill-default*/
+    --color-l-txt-prim-def: #000411; /*light-text-primary-default*/
+    --color-l-txt-prim-act: #314866; /*light-text-primary-active*/
+    --color-l-txt-prim-hov: #000000; /*light-text-primary-hover*/
+    --color-l-txt-subd-prim-def: #4e5251; /*light-text-subdued-primary-default*/
+    --color-l-txt-subd-sec-def: #686e6b; /*light-text-subdued-secondary-default*/
+    --color-l-txt-subd-sec-hov: #3d5a80; /*light-text-subdued-secondary-hover*/
+    --color-l-bord-def: #aeb7b3; /*light-border-default*/
+    --color-l-bord-hov: #3d5a80; /*light-border-hover*/
+    --color-l-ic-prim-def: #3d5a80; /*light-icon-primary-def*/
+    --color-l-ic-prim-hov: #283b54; /*light-icon-primary-hover*/
+    --color-l-btn-fill-prim-def: #e6e9e7; /*light-button-fill-primary-default*/
+    --color-l-fill-prim-hov: #3d5a80; /*light-fill-primary-hover*/
+
+    --color-d-bg-def: #000106; /*dark-background-default*/
+    --color-d-bg-surf-prim-def: #00030e; /*dark-background-surface-primary-default*/
+    --color-d-bg-fill-def: #838986; /*dark-background-fill-default*/
+    --color-d-txt-prim-def: #e6e6e7; /*dark-text-primary-default*/
+    --color-d-txt-prim-act: #bfa253; /*dark-text-primary-active*/
+    --color-d-txt-prim-hov: #fdfaf0; /*dark-text-primary-hover*/
+    --color-d-txt-subd-prim-def: #b0b1b5; /*dark-text-subdued-primary-default*/
+    --color-d-txt-subd-sec-def: #d9d9db; /*dark-text-subdued-secondary-default*/
+    --color-d-txt-subd-sec-hov: #efcb68; /*dark-text-subdued-secondary-hover*/
+    --color-d-bord-def: #838986; /*dark-border-default*/
+    --color-d-bord-hov: #efcb68; /*dark-border-hover*/
+    --color-d-ic-prim-def: #efcb68; /*dark-icon-primary-def*/
+    --color-d-ic-prim-hov: #fdf7e8; /*dark-icon-primary-hover*/
+    --color-d-btn-fill-prim-def: #00030e; /*dark-button-fill-primary-default*/
+    --color-d-fill-prim-hov: #efcb68; /*dark-fill-primary-hover*/
+
+    --animate-inf-scroll: infscroll 20s linear infinite;
+    --animate-inf-work-scroll: infworkscroll 20s linear infinite;
+
+    @keyframes infscroll {
+        to {
+            transform: translateX(calc(-50% - 0.375rem));
+        }
+    }
+
+    @keyframes infworkscroll {
+        to {
+            transform: translateX(calc(-50% - 0.75rem));
+        }
+    }
+}
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+body {
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+    font-family: "Titillium Web";
+}
