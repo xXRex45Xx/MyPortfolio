@@ -6,6 +6,7 @@ namespace backend.Models;
 /// <summary>
 /// Database context for the portfolio application.
 /// Manages all database operations and entity relationships.
+/// WARNING: Contains default admin credentials that must be changed in production.
 /// </summary>
 public class PContext(DbContextOptions<PContext> options) : DbContext(options)
 {

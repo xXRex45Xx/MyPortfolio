@@ -7,8 +7,7 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Configure API documentation and Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -16,6 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
+    // Configure Swagger documentation
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "Portfolio API",
@@ -48,35 +48,100 @@ builder.Services.AddSwaggerGen(options =>
 
 // Configure database context with SQLite
 builder.Services.AddDbContext<PContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Configure JWT authentication
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+{
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found."));
+    // Enable sensitive data logging only in Development
+    if (builder.Environment.IsDevelopment())
     {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            // Ensure JWT configuration values are present
-            ValidIssuer = builder.Configuration.GetValue<string>("Jwt:Issuer") ?? throw new InvalidOperationException("Jwt:Issuer is not configured"),
-            ValidAudience = builder.Configuration.GetValue<string>("Jwt:Audience") ?? throw new InvalidOperationException("Jwt:Audience is not configured"),
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("Jwt:Key") ?? throw new InvalidOperationException("Jwt:Key is not configured")))
-        };
-    });
+        options.EnableSensitiveDataLogging();
+    }
+});
+
+// Configure JWT authentication with secure defaults
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ClockSkew = TimeSpan.FromMinutes(5), // Reduce clock skew for better security
+        // Ensure JWT configuration values are present
+        ValidIssuer = builder.Configuration.GetValue<string>("Jwt:Issuer")
+            ?? throw new InvalidOperationException("Jwt:Issuer is not configured"),
+        ValidAudience = builder.Configuration.GetValue<string>("Jwt:Audience")
+            ?? throw new InvalidOperationException("Jwt:Audience is not configured"),
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("Jwt:Key")
+                ?? throw new InvalidOperationException("Jwt:Key is not configured")))
+    };
+
+    // Additional security options
+    options.RequireHttpsMetadata = !builder.Environment.IsDevelopment(); // Require HTTPS in production
+    options.SaveToken = true; // Save the token after validation
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline with appropriate middleware
 if (app.Environment.IsDevelopment())
 {
+    // Enable Swagger UI in development
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    // Production security headers
+    app.Use(async (context, next) =>
+    {
+        context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+        context.Response.Headers.Append("X-Frame-Options", "DENY");
+        context.Response.Headers.Append("X-XSS-Protection", "1; mode=block");
+        context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+        await next();
+    });
+}
 
-app.UseHttpsRedirection();
+// Always redirect to HTTPS in production
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
+// Configure CORS with secure defaults
+app.UseCors(options =>
+{
+    if (app.Environment.IsDevelopment())
+    {
+        // Allow localhost in development
+        options.SetIsOriginAllowed(origin => origin.StartsWith("http://localhost:5173"))
+               .AllowCredentials();
+    }
+    else
+    {
+        // Restrict to specific domain in production
+        options.SetIsOriginAllowed(origin =>
+            origin.StartsWith("https://your-production-domain.com"))
+               .AllowCredentials();
+    }
+    // Add specific allowed headers
+    options.WithHeaders("Authorization", "Content-Type");
+    // Add specific allowed methods
+    options.WithMethods("GET", "POST", "PUT", "DELETE");
+});
+
+// Enable static file serving
+app.UseStaticFiles();
+
+// Enable authentication and authorization
 app.UseAuthentication();
 app.UseAuthorization();
 

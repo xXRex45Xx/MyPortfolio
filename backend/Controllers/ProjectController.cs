@@ -47,14 +47,15 @@ public class ProjectController : ControllerBase
             {
                 Id = p.Id,
                 Title = p.Title,
-                ShortDescription = p.ShortDescription
+                ShortDescription = p.ShortDescription,
+                ImageUrl = p.ImageUrl
             }).ToListAsync();
             return Ok(projects);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unexpected error occurred.");
-            return StatusCode(500, "An unexpected error occurred.");
+            return StatusCode(500, new { message = "An unexpected error occurred." });
         }
     }
 
@@ -83,7 +84,7 @@ public class ProjectController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unexpected error occurred.");
-            return StatusCode(500, "An unexpected error occurred.");
+            return StatusCode(500, new { message = "An unexpected error occurred." });
         }
     }
 
@@ -94,13 +95,33 @@ public class ProjectController : ControllerBase
     /// <param name="project">The project information to create.</param>
     /// <returns>Success response if the project was created.</returns>
     /// <response code="200">If the project was successfully created.</response>
+    /// <response code="400">If the project data is invalid or if the image is missing, too large (>20MB), or not a JPEG/JPG file.</response>
     /// <response code="401">If the user is not authenticated as an admin.</response>
     /// <response code="500">If an unexpected error occurs.</response>
     [HttpPost]
-    public async Task<IActionResult> AddProject([FromBody] Project project)
+    public async Task<IActionResult> AddProject([FromForm] CreateProjectDTO project)
     {
         try
         {
+            if (project.Image == null)
+                return BadRequest(new { message = "Image is required" });
+            if (project.Image.Length == 0)
+                return BadRequest(new { message = "Image is required" });
+            if (project.Image.Length > 20 * 1024 * 1024)
+                return BadRequest(new { message = "Image is too large" });
+            if (project.Image.ContentType != "image/jpeg" && project.Image.ContentType != "image/jpg")
+                return BadRequest(new { message = "Invalid file type" });
+
+            if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images")))
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images"));
+
+            var fileName = Guid.NewGuid().ToString() + ".jpg";
+
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await project.Image.CopyToAsync(stream);
+            }
             var p = new Project
             {
                 Title = project.Title,
@@ -109,16 +130,25 @@ public class ProjectController : ControllerBase
                 Description = project.Description,
                 EndDate = project.EndDate,
                 KeyFeatures = project.KeyFeatures,
-                Link = project.Link
+                Link = project.Link,
+                ImageUrl = "/images/" + fileName
             };
-            await _context.Projects.AddAsync(p);
-            await _context.SaveChangesAsync();
-            return Ok();
+            try
+            {
+                await _context.Projects.AddAsync(p);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception)
+            {
+                System.IO.File.Delete(filePath);
+                throw;
+            }
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unexpected error occurred.");
-            return StatusCode(500, "An unexpected error occurred.");
+            return StatusCode(500, new { message = "An unexpected error occurred." });
         }
     }
 
@@ -134,7 +164,7 @@ public class ProjectController : ControllerBase
     /// <response code="404">If the project is not found.</response>
     /// <response code="500">If an unexpected error occurs.</response>
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateProject(int id, [FromBody] Project project)
+    public async Task<IActionResult> UpdateProject(int id, [FromForm] UpdateProjectDTO project)
     {
         try
         {
@@ -142,6 +172,24 @@ public class ProjectController : ControllerBase
             if (existingProject == null)
             {
                 return NotFound();
+            }
+            if (project.Image != null && project.Image.Length > 0)
+            {
+                if (project.Image.Length > 20 * 1024 * 1024)
+                    return BadRequest(new { message = "Image is too large" });
+                if (project.Image.ContentType != "image/jpeg" && project.Image.ContentType != "image/png")
+                    return BadRequest(new { message = "Invalid file type" });
+
+                if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images")))
+                    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images"));
+
+                var fileName = Guid.NewGuid().ToString() + ".jpg";
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await project.Image.CopyToAsync(stream);
+                }
+                existingProject.ImageUrl = "/images/" + fileName;
             }
             existingProject.Title = project.Title;
             existingProject.Industry = project.Industry;
@@ -156,7 +204,7 @@ public class ProjectController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unexpected error occurred.");
-            return StatusCode(500, "An unexpected error occurred.");
+            return StatusCode(500, new { message = "An unexpected error occurred." });
         }
     }
 
@@ -180,6 +228,11 @@ public class ProjectController : ControllerBase
             {
                 return NotFound();
             }
+            if (existingProject.ImageUrl != null)
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", existingProject.ImageUrl.Split('/').Last());
+                System.IO.File.Delete(filePath);
+            }
             _context.Projects.Remove(existingProject);
             await _context.SaveChangesAsync();
             return Ok();
@@ -187,7 +240,7 @@ public class ProjectController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unexpected error occurred.");
-            return StatusCode(500, "An unexpected error occurred.");
+            return StatusCode(500, new { message = "An unexpected error occurred." });
         }
     }
 }

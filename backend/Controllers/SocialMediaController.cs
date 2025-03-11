@@ -37,7 +37,7 @@ public class SocialMediaController(PContext context, ILogger<SocialMediaControll
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unexpected error occurred.");
-            return StatusCode(500, "An unexpected error occurred.");
+            return StatusCode(500, new { message = "An unexpected error occurred." });
         }
     }
 
@@ -67,7 +67,7 @@ public class SocialMediaController(PContext context, ILogger<SocialMediaControll
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unexpected error occurred.");
-            return StatusCode(500, "An unexpected error occurred.");
+            return StatusCode(500, new { message = "An unexpected error occurred." });
         }
     }
 
@@ -100,7 +100,7 @@ public class SocialMediaController(PContext context, ILogger<SocialMediaControll
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unexpected error occurred.");
-            return StatusCode(500, "An unexpected error occurred.");
+            return StatusCode(500, new { message = "An unexpected error occurred." });
         }
     }
 
@@ -131,7 +131,7 @@ public class SocialMediaController(PContext context, ILogger<SocialMediaControll
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unexpected error occurred.");
-            return StatusCode(500, "An unexpected error occurred.");
+            return StatusCode(500, new { message = "An unexpected error occurred." });
         }
     }
 }

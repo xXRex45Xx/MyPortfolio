@@ -49,7 +49,7 @@ public class SkillsController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unexpected error occurred.");
-            return StatusCode(500, "An unexpected error occurred.");
+            return StatusCode(500, new { message = "An unexpected error occurred." });
         }
     }
 
@@ -76,12 +76,13 @@ public class SkillsController : ControllerBase
                 Name = skill.Name
             };
             await _context.Skills.AddAsync(s);
+            await _context.SaveChangesAsync();
             return Ok();
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unexpected error occurred.");
-            return StatusCode(500, "An unexpected error occurred.");
+            return StatusCode(500, new { message = "An unexpected error occurred." });
         }
     }
 
@@ -117,7 +118,7 @@ public class SkillsController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unexpected error occurred.");
-            return StatusCode(500, "An unexpected error occurred.");
+            return StatusCode(500, new { message = "An unexpected error occurred." });
         }
     }
 
@@ -148,7 +149,7 @@ public class SkillsController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "An unexpected error occurred.");
-            return StatusCode(500, "An unexpected error occurred.");
+            return StatusCode(500, new { message = "An unexpected error occurred." });
         }
     }
 }

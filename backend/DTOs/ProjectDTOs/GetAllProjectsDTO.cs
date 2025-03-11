@@ -21,4 +21,10 @@ public class GetAllProjectsDTO
     /// This is used for quick previews in project listings.
     /// </summary>
     public string ShortDescription { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the URL of the project's image.
+    /// This is used to display the project's image in the project listings.
+    /// </summary>
+    public string ImageUrl { get; set; } = string.Empty;
 }
