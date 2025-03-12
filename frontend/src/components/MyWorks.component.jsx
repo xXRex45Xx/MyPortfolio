@@ -1,4 +1,3 @@
-import mockup from "../assets/mockup.png";
 import SectionContainer from "./SectionContainer.component";
 import Work from "./Work.component";
 import { useNavigate } from "react-router-dom";
