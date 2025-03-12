@@ -57,6 +57,12 @@ public class UpdateProjectDTO
     public string Link { get; set; } = string.Empty;
 
     /// <summary>
+    /// Gets or sets a value indicating whether the project is a source code repository.
+    /// </summary>
+    [Required(ErrorMessage = "Is source code is required")]
+    public bool IsSourceCode { get; set; } = false;
+
+    /// <summary>
     /// Gets or sets the project image file.
     /// Optional when updating a project. If provided, must be a JPEG/PNG file under 20MB.
     /// If not provided, the existing image will be kept.

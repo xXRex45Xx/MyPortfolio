@@ -57,6 +57,11 @@ public class Project
     public string Link { get; set; } = string.Empty;
 
     /// <summary>
+    /// Gets or sets a value indicating whether the project is a source code repository.
+    /// </summary>
+    public bool IsSourceCode { get; set; } = false;
+
+    /// <summary>
     /// Gets or sets the image URL for the project.
     /// </summary>
     public string ImageUrl { get; set; } = string.Empty;

@@ -8,6 +8,7 @@ import IndustrySvg from "../assets/industry-icon.svg?react";
 import CustomButton from "../components/CustomButton.component";
 import CalendarSvg from "../assets/calendar.svg?react";
 import WebsiteSvg from "../assets/website.svg?react";
+import GitHubSvg from "../assets/github.svg?react";
 import { getProject } from "../utils/api/project-api.util";
 import { useLoaderData, Await } from "react-router-dom";
 import { Suspense } from "react";
@@ -72,8 +73,14 @@ const WorkPage = () => {
                                 stretch
                                 subdued
                             >
-                                <WebsiteSvg className="transition-colors *:stroke-l-ic-prim-def dark:*:stroke-d-ic-prim-def" />
-                                explore the website
+                                {project.isSourceCode ? (
+                                    <GitHubSvg className="transition-colors *:stroke-l-ic-prim-def dark:*:stroke-d-ic-prim-def" />
+                                ) : (
+                                    <WebsiteSvg className="transition-colors *:stroke-l-ic-prim-def dark:*:stroke-d-ic-prim-def" />
+                                )}
+                                {project.isSourceCode
+                                    ? "explore the code"
+                                    : "explore the website"}
                             </CustomButton>
                         </div>
                     </div>

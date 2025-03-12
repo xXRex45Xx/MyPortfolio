@@ -58,6 +58,12 @@ public class CreateProjectDTO
     public string Link { get; set; } = string.Empty;
 
     /// <summary>
+    /// Gets or sets a value indicating whether the project is a source code repository.
+    /// </summary>
+    [Required(ErrorMessage = "Is source code is required")]
+    public bool IsSourceCode { get; set; } = false;
+
+    /// <summary>
     /// Gets or sets the project image file.
     /// Required for project creation. Must be a JPEG/JPG file under 20MB.
     /// </summary>

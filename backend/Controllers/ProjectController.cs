@@ -131,6 +131,7 @@ public class ProjectController : ControllerBase
                 EndDate = project.EndDate,
                 KeyFeatures = project.KeyFeatures,
                 Link = project.Link,
+                IsSourceCode = project.IsSourceCode,
                 ImageUrl = "/images/" + fileName
             };
             try
@@ -198,6 +199,7 @@ public class ProjectController : ControllerBase
             existingProject.EndDate = project.EndDate;
             existingProject.KeyFeatures = project.KeyFeatures;
             existingProject.Link = project.Link;
+            existingProject.IsSourceCode = project.IsSourceCode;
             await _context.SaveChangesAsync();
             return Ok();
         }
