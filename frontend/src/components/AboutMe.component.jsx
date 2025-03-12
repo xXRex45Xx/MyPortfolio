@@ -8,29 +8,28 @@ import DownloadSvg from "../assets/download.svg?react";
 import EmailSvg from "../assets/email.svg?react";
 import ScheduleSvg from "../assets/schedule.svg?react";
 import SectionContainer from "./SectionContainer.component";
-
+import { DataContext } from "../main";
+import { useContext } from "react";
+import serverAddress from "../utils/api/server-address.util";
 const AboutMe = () => {
+    const { myInfo } = useContext(DataContext);
+
     const handleDownloadResume = () => {
-        // Add resume download logic
-        window.open("/path-to-your-resume.pdf", "_blank");
+        window.open(`${serverAddress}/uploads/Esrom's Resume.pdf`, "_blank");
     };
 
     const handleEmailClick = () => {
-        window.location.href = "mailto:your.email@example.com";
+        window.location.href = `mailto:${myInfo?.email}`;
     };
 
     const handleScheduleCall = () => {
-        // Add your calendly or meeting scheduler link
         window.open("your-scheduling-link", "_blank");
     };
 
     return (
         <SectionContainer title="about" activeTitle="me">
             <p className="text-l-txt-subd-prim-def text-xl font-normal dark:text-d-txt-subd-prim-def">
-                hi, i'm esrom mulugeta tadesse, a fullstack developer with 3+
-                years of experience. currently a senior at southwest minnesota
-                state university majoring in computer science. interested in
-                specializing in cyber-security and data science.
+                {myInfo?.aboutMe}
             </p>
             <div className="flex flex-wrap items-center p-4 gap-4 border-t border-t-l-bord-def">
                 <CustomButton

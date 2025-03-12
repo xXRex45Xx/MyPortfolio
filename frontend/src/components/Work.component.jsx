@@ -10,10 +10,10 @@
 import PropTypes from "prop-types";
 
 const Work = ({ title, imgSrc, description, onClick }) => (
-    <li className="transition-transform flex flex-col gap-4 w-60">
+    <li className="transition-transform flex flex-col w-60">
         <button
             onClick={onClick}
-            className="text-left w-full cursor-pointer hover:scale-105"
+            className="flex flex-col text-left w-full cursor-pointer hover:scale-105 gap-5"
             aria-label={`View ${title} project details`}
         >
             <div className="transition-colors max-h-40 flex flex-col gap-9 pl-2.5 pt-2.5 self-stretch overflow-hidden border rounded-lg border-l-bord-def bg-l-bg-fill-def dark:border-d-bord-def dark:bg-d-bg-fill-def">
@@ -21,7 +21,7 @@ const Work = ({ title, imgSrc, description, onClick }) => (
                     {title}
                 </h3>
                 <img
-                    className="rotate-[10deg]"
+                    className="rotate-[10deg] rounded-lg"
                     src={imgSrc}
                     alt={`${title} project preview`}
                     loading="lazy"

@@ -77,7 +77,7 @@ public class ProjectController : ControllerBase
             var project = await _context.Projects.FindAsync(id);
             if (project == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Project does not exist" });
             }
             return Ok(project);
         }

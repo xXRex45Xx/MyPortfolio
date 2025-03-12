@@ -6,13 +6,17 @@
  * @param {Function} props.onThemeChange - Callback function to toggle theme
  * @returns {JSX.Element} Header component
  */
-import myPic from "../assets/image.jpg";
 import MoonSvg from "../assets/moon.svg?react";
 import SunSvg from "../assets/sun.svg?react";
 import CustomButton from "../components/CustomButton.component";
 import PropTypes from "prop-types";
+import { DataContext } from "../main";
+import { useContext } from "react";
+import serverAddress from "../utils/api/server-address.util";
 
 const Header = ({ isDark, onThemeChange }) => {
+    const { myInfo } = useContext(DataContext);
+
     return (
         <header className="flex justify-center pt-5 w-full" role="banner">
             <nav
@@ -22,16 +26,15 @@ const Header = ({ isDark, onThemeChange }) => {
                 <div className="flex gap-2.5 items-center justify-center">
                     <img
                         className="w-11 border-2 rounded-full border-l-ic-prim-def dark:border-d-ic-prim-def"
-                        src={myPic}
+                        src={`${serverAddress}/images/profile.jpg`}
                         alt="Profile picture of Esrom Tadesse"
                     />
                     <div className="flex flex-col items-start">
                         <h1 className="text-l-txt-prim-def text-lg font-semibold dark:text-d-txt-prim-def">
-                            esrom_tadesse
+                            {myInfo?.name}
                         </h1>
                         <p className="text-l-txt-subd-sec-def text-sm font-normal dark:text-d-txt-subd-prim-def">
-                            software engineer with an interest in cyber-security
-                            and data science
+                            {myInfo?.title}
                         </p>
                     </div>
                 </div>
