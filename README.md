@@ -33,7 +33,7 @@ my-portfolio/
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/xXRex45Xx/MyPortfolio.git
 cd my-portfolio
 ```
 
@@ -75,7 +75,8 @@ Create an `appsettings.json` file in the backend directory with the following st
         "Key": "your-secret-key",
         "Issuer": "your-issuer",
         "Audience": "your-audience"
-    }
+    },
+    "ClientUrl": "your-client-url"
 }
 ```
 
