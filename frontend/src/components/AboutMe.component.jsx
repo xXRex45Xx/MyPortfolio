@@ -43,7 +43,7 @@ const AboutMe = () => {
                 </CustomButton>
                 <CustomButton
                     onClick={handleEmailClick}
-                    addClass="hover:scale-105 ml-auto hover:[&>*:first-child]:*:stroke-l-ic-prim-hov dark:hover:[&>*:first-child]:*:stroke-d-ic-prim-hov"
+                    addClass="hover:scale-105 sm:ml-auto hover:[&>*:first-child]:*:stroke-l-ic-prim-hov dark:hover:[&>*:first-child]:*:stroke-d-ic-prim-hov"
                     iconSizeClass="w-5"
                     ariaLabel="Send email"
                 >

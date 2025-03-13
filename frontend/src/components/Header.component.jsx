@@ -33,7 +33,7 @@ const Header = ({ isDark, onThemeChange }) => {
                         <h1 className="text-l-txt-prim-def text-lg font-semibold dark:text-d-txt-prim-def">
                             {myInfo?.name}
                         </h1>
-                        <p className="text-l-txt-subd-sec-def text-sm font-normal dark:text-d-txt-subd-prim-def">
+                        <p className="hidden xs:block text-l-txt-subd-sec-def text-sm font-normal dark:text-d-txt-subd-prim-def">
                             {myInfo?.title}
                         </p>
                     </div>

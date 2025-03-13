@@ -19,7 +19,6 @@ import { getSocialMediaLinks } from "./utils/api/social-media-api.util";
 function App() {
     const data = useLoaderData();
     const navigation = useNavigation();
-    console.log(navigation.state);
     const [myInfo, setMyInfo] = useState(null);
     const [projects, setProjects] = useState([]);
     const [skills, setSkills] = useState([]);
@@ -57,7 +56,7 @@ function App() {
         >
             <div
                 data-theme={isDark ? "dark" : "light"}
-                className="transition-colors w-full h-full p-6 flex flex-col items-center justify-between gap-10 bg-l-bg-surf-prim-def dark:bg-d-bg-surf-prim-def"
+                className="transition-colors w-full h-full p-2 sm:p-6 flex flex-col items-center justify-between gap-10 bg-l-bg-surf-prim-def dark:bg-d-bg-surf-prim-def"
                 role="application"
             >
                 <Header

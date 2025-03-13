@@ -20,8 +20,8 @@ const WorkPage = () => {
         window.open(project.link, "_blank");
     };
     return (
-        <main className="w-full h-full flex flex-col items-center justify-start gap-4 overflow-auto">
-            <div className="flex items-center gap-3 w-2/3 max-w-4xl">
+        <main className="w-full h-full flex flex-col items-center justify-start gap-4 overflow-auto scrollbar scrollbar-w-1.5 scrollbar-h-1.5 scrollbar-thumb-rounded-full scrollbar-thumb-l-ic-prim-def scrollbar-hover:scrollbar-thumb-l-ic-prim-hov dark:scrollbar-thumb-d-ic-prim-def dark:scrollbar-hover:scrollbar-thumb-d-ic-prim-hov">
+            <div className="flex items-center flex-wrap sm:flex-nowrap gap-3 w-2/3 max-w-4xl">
                 <InfoTag>
                     <IndustrySvg className="transition-colors *:stroke-l-txt-subd-sec-def dark:*:stroke-d-txt-subd-sec-def" />
                     {project.industry}
@@ -34,8 +34,8 @@ const WorkPage = () => {
                     })}
                 </InfoTag>
             </div>
-            <div className="flex py-3 items-start gap-12 w-2/3 max-w-4xl">
-                <div className="flex flex-col gap-2.5 w-1/2">
+            <div className="flex flex-wrap md:flex-nowrap py-3 items-start gap-12 w-2/3 max-w-4xl">
+                <div className="flex flex-col gap-2.5 sm:min-w-xs md:max-w-xs lg:max-w-md ">
                     <h1 className="text-3xl font-semibold text-l-txt-prim-def dark:text-d-txt-prim-def">
                         {project.title}
                     </h1>
@@ -51,8 +51,8 @@ const WorkPage = () => {
                         ))}
                     </ul>
                 </div>
-                <div className="flex flex-col items-start gap-6 flex-1">
-                    <div className="max-w-md overflow-hidden">
+                <div className="flex flex-col items-start gap-6 min-w-0 flex-1 overflow-hidden">
+                    <div className="max-w-md">
                         <img
                             src={`${serverAddress}${project.imageUrl}`}
                             alt="mockup"

@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+@plugin 'tailwind-scrollbar' {
+    nocompatible: true;
+    preferredstrategy: "pseudoelements";
+}
+
 @theme {
     --color-l-bg-def: #f7f8f7; /*light-background-default*/
     --color-l-bg-surf-prim-def: #e6e9e7; /*light-background-surface-primary-default*/
@@ -33,8 +38,8 @@
     --color-d-btn-fill-prim-def: #00030e; /*dark-button-fill-primary-default*/
     --color-d-fill-prim-hov: #efcb68; /*dark-fill-primary-hover*/
 
-    --animate-inf-scroll: infscroll 20s linear infinite;
-    --animate-inf-work-scroll: infworkscroll 20s linear infinite;
+    --animate-inf-scroll: infscroll 50s linear infinite;
+    --animate-inf-work-scroll: infworkscroll 50s linear infinite;
 
     @keyframes infscroll {
         to {
