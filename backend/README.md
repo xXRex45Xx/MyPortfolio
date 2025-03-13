@@ -96,13 +96,21 @@ dotnet restore
 }
 ```
 
-4. Apply database migrations:
+4. Client Url configuration for CORS policy in `appsettings.json`:
+
+```json
+{
+    "ClientUrl": "your-client-url"
+}
+```
+
+5. Apply database migrations:
 
 ```bash
 dotnet ef database update
 ```
 
-5. Run the application:
+6. Run the application:
 
 ```bash
 dotnet run

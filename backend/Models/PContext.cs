@@ -57,7 +57,6 @@ public class PContext(DbContextOptions<PContext> options) : DbContext(options)
             Title = "",
             Email = "",
             Phone = "",
-            ResumeUrl = "",
             AboutMe = ""
         });
     }

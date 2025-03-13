@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Models;
 
@@ -10,9 +11,11 @@ using backend.Models;
 namespace backend.Migrations
 {
     [DbContext(typeof(PContext))]
-    partial class PContextModelSnapshot : ModelSnapshot
+    [Migration("20250312202059_RemovedResumeURLFromMyInfo")]
+    partial class RemovedResumeURLFromMyInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.13");
@@ -37,14 +40,6 @@ namespace backend.Migrations
                         .IsUnique();
 
                     b.ToTable("Admins");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Password = "AQAAAAIAAYagAAAAEFoR/ePszzlli8Om7AMyLVL9gSmvdL1x784z3XAwIsg4ds7UdMkIuHldSzOnrkoCMA==",
-                            Username = "admin"
-                        });
                 });
 
             modelBuilder.Entity("backend.Models.MyInfo", b =>
@@ -76,17 +71,6 @@ namespace backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MyInfo");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AboutMe = "",
-                            Email = "",
-                            Name = "",
-                            Phone = "",
-                            Title = ""
-                        });
                 });
 
             modelBuilder.Entity("backend.Models.Project", b =>

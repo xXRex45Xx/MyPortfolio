@@ -103,6 +103,8 @@ public class ProjectController : ControllerBase
     {
         try
         {
+            if (await _context.Projects.AnyAsync(p => p.Title == project.Title))
+                return BadRequest(new { message = "Project already exists" });
             if (project.Image == null)
                 return BadRequest(new { message = "Image is required" });
             if (project.Image.Length == 0)

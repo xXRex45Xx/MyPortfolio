@@ -6,7 +6,7 @@
 import "./App.css";
 import Header from "./components/Header.component";
 import Footer from "./components/Footer.component";
-import { Outlet, useLoaderData } from "react-router-dom";
+import { Outlet, useLoaderData, useNavigation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { getMyInfo } from "./utils/api/my-info-api.util";
@@ -14,18 +14,22 @@ import { LineWave } from "react-loader-spinner";
 import { getProjects } from "./utils/api/project-api.util";
 import { DataContext } from "./main";
 import { getSkills } from "./utils/api/skill-api.util";
+import { getSocialMediaLinks } from "./utils/api/social-media-api.util";
 
 function App() {
     const data = useLoaderData();
-
+    const navigation = useNavigation();
+    console.log(navigation.state);
     const [myInfo, setMyInfo] = useState(null);
     const [projects, setProjects] = useState([]);
     const [skills, setSkills] = useState([]);
+    const [socialMediaLinks, setSocialMediaLinks] = useState([]);
 
     useEffect(() => {
         setMyInfo(data.myInfo);
         setProjects(data.projects);
         setSkills(data.skills);
+        setSocialMediaLinks(data.socialMediaLinks);
     }, [data]);
 
     // State for managing dark/light theme
@@ -48,7 +52,9 @@ function App() {
     }, [systemPrefersDark]);
 
     return (
-        <DataContext.Provider value={{ myInfo, projects, skills }}>
+        <DataContext.Provider
+            value={{ myInfo, projects, skills, socialMediaLinks }}
+        >
             <div
                 data-theme={isDark ? "dark" : "light"}
                 className="transition-colors w-full h-full p-6 flex flex-col items-center justify-between gap-10 bg-l-bg-surf-prim-def dark:bg-d-bg-surf-prim-def"
@@ -58,12 +64,29 @@ function App() {
                     isDark={isDark}
                     onThemeChange={() => setIsDark((prev) => !prev)}
                 />
-                <Outlet />
+                {navigation.state == "loading" ? (
+                    <HydrateChildrenFallback />
+                ) : (
+                    <Outlet />
+                )}
+
                 <Footer />
             </div>
         </DataContext.Provider>
     );
 }
+
+const HydrateChildrenFallback = () => {
+    return (
+        <div className={`w-full h-full flex items-center justify-center`}>
+            <LineWave
+                wrapperClass="[&>*:first-child]:[&>*]:fill-l-ic-prim-def dark:[&>*:first-child]:[&>*]:fill-d-ic-prim-def"
+                height={160}
+                width={160}
+            />
+        </div>
+    );
+};
 
 export default App;
 
@@ -71,8 +94,19 @@ export const loader = async () => {
     const myInfo = getMyInfo();
     const projects = getProjects();
     const skills = getSkills();
-    const data = await Promise.all([myInfo, projects, skills]);
-    return { myInfo: data[0], projects: data[1], skills: data[2] };
+    const socialMediaLinks = getSocialMediaLinks();
+    const data = await Promise.all([
+        myInfo,
+        projects,
+        skills,
+        socialMediaLinks,
+    ]);
+    return {
+        myInfo: data[0],
+        projects: data[1],
+        skills: data[2],
+        socialMediaLinks: data[3],
+    };
 };
 
 export const HydrateFallback = () => {

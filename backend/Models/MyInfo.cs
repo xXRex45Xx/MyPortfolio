@@ -40,13 +40,6 @@ public class MyInfo
     public string Phone { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the URL to the downloadable resume.
-    /// </summary>
-    [Required(ErrorMessage = "Resume URL is required")]
-    [Url(ErrorMessage = "Invalid URL")]
-    public string ResumeUrl { get; set; } = string.Empty;
-
-    /// <summary>
     /// Gets or sets a brief introduction or description about the portfolio owner.
     /// </summary>
     [Required(ErrorMessage = "About Me is required")]

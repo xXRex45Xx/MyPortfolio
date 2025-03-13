@@ -108,6 +108,10 @@ else
         context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
         await next();
     });
+
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<PContext>();
+    dbContext.Database.Migrate();
 }
 
 // Always redirect to HTTPS in production
@@ -122,14 +126,16 @@ app.UseCors(options =>
     if (app.Environment.IsDevelopment())
     {
         // Allow localhost in development
-        options.SetIsOriginAllowed(origin => origin.StartsWith("http://localhost:5173"))
+        options.SetIsOriginAllowed(origin => origin.StartsWith(
+            builder.Configuration.GetValue<string>("ClientUrl") ?? throw new Exception("ClientUrl is not configured.")
+        ))
                .AllowCredentials();
     }
     else
     {
         // Restrict to specific domain in production
         options.SetIsOriginAllowed(origin =>
-            origin.StartsWith("https://your-production-domain.com"))
+            origin.StartsWith(builder.Configuration.GetValue<string>("ClientUrl") ?? throw new Exception("ClientUrl is not configured.")))
                .AllowCredentials();
     }
     // Add specific allowed headers

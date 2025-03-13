@@ -1,0 +1,28 @@
+bin/
+obj/
+
+.vscode/
+.vs/
+
+# Build output directories
+bin/
+obj/
+
+# Visual Studio and user-specific files
+.vs/
+*.user
+*.suo
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Git files
+.git/
+.gitignore
+
+# Development configuration (if not needed in production)
+appsettings.Development.json
+
+# Local SQLite database and file uploads (these are runtime artifacts)
+wwwroot/uploads/

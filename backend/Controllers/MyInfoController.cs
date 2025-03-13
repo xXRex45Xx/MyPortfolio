@@ -76,7 +76,6 @@ public class MyInfoController : ControllerBase
                     Title = info.Title,
                     Email = info.Email,
                     Phone = info.Phone,
-                    ResumeUrl = info.ResumeUrl,
                     AboutMe = info.AboutMe
                 };
                 await _context.MyInfo.AddAsync(tempInfo);
@@ -86,7 +85,6 @@ public class MyInfoController : ControllerBase
             myInfo.Title = info.Title;
             myInfo.Email = info.Email;
             myInfo.Phone = info.Phone;
-            myInfo.ResumeUrl = info.ResumeUrl;
             myInfo.AboutMe = info.AboutMe;
             await _context.SaveChangesAsync();
             return Ok();
