@@ -14,6 +14,8 @@ ENV ASPNETCORE_ENVIRONMENT=Production \
     ASPNETCORE_HTTP_PORTS=8080 \
     DOTNET_RUNNING_IN_CONTAINER=true
 
+RUN mkdir -p /app/Data /app/wwwroot/images /app/wwwroot/uploads
+
 COPY --from=build /app/publish .
 
 EXPOSE 8080
