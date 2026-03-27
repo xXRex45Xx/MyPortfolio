@@ -6,6 +6,9 @@
 }
 
 @theme {
+    --font-display: "Cormorant Garamond", serif;
+    --font-body: "Titillium Web", sans-serif;
+
     --color-l-bg-def: #f7f8f7; /*light-background-default*/
     --color-l-bg-surf-prim-def: #e6e9e7; /*light-background-surface-primary-default*/
     --color-l-bg-fill-def: #f3f4f4; /*light-background-fill-default*/
@@ -38,8 +41,24 @@
     --color-d-btn-fill-prim-def: #00030e; /*dark-button-fill-primary-default*/
     --color-d-fill-prim-hov: #efcb68; /*dark-fill-primary-hover*/
 
+    --color-l-admin-panel: #f3efe6;
+    --color-l-admin-panel-strong: #e8dfd0;
+    --color-l-admin-accent: #7b5a34;
+    --color-l-admin-accent-soft: #b78b58;
+    --color-l-admin-ink: #1e222f;
+    --color-l-admin-line: #b7aa98;
+
+    --color-d-admin-panel: #10131d;
+    --color-d-admin-panel-strong: #181d28;
+    --color-d-admin-accent: #efcb68;
+    --color-d-admin-accent-soft: #c7a864;
+    --color-d-admin-ink: #f4efe4;
+    --color-d-admin-line: #4c5568;
+
     --animate-inf-scroll: infscroll 50s linear infinite;
     --animate-inf-work-scroll: infworkscroll 50s linear infinite;
+    --animate-admin-fade: adminfade 0.55s ease-out both;
+    --animate-admin-rise: adminrise 0.7s ease-out both;
 
     @keyframes infscroll {
         to {
@@ -52,6 +71,26 @@
             transform: translateX(calc(-50% - 0.75rem));
         }
     }
+
+    @keyframes adminfade {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes adminrise {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 }
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
@@ -60,5 +99,5 @@ body {
     width: 100vw;
     height: 100vh;
     box-sizing: border-box;
-    font-family: "Titillium Web";
+    font-family: var(--font-body);
 }
