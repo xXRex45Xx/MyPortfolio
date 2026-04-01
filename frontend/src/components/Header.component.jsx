@@ -28,6 +28,7 @@ const Header = ({ isDark, onThemeChange }) => {
                         className="w-11 border-2 rounded-full border-l-ic-prim-def dark:border-d-ic-prim-def"
                         src={`${serverAddress}/images/profile.jpg`}
                         alt="Profile picture of Esrom Tadesse"
+                        crossorigin="anonymous"
                     />
                     <div className="flex flex-col items-start">
                         <h1 className="text-l-txt-prim-def text-lg font-semibold dark:text-d-txt-prim-def">
