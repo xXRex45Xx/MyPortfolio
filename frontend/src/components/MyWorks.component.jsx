@@ -13,7 +13,7 @@ const MyWorks = () => {
     return (
         <SectionContainer title="discover some of" activeTitle="my works">
             <div className="flex items-center w-full overflow-x-hidden hover:[&>*:first-child]:[animation-play-state:paused]">
-                <ul className="flex py-2 items-center gap-6 self-stretch animate-inf-work-scroll">
+                <ul className="flex py-2 gap-6 self-stretch animate-inf-work-scroll">
                     {[...projects, ...projects].map(
                         ({ id, title, shortDescription, imageUrl }, index) => (
                             <Work
